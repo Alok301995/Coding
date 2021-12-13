@@ -46,12 +46,7 @@ void swap(int &i, int &j)
 // *************************************************************
 // Kth largest number and the smallest number in a array
 /*
-void swap(int &i, int &j)
-{
-    int temp = i;
-    i = j;
-    j = temp;
-}
+
 
 int partition(vector<int> &vect, int i, int j)
 {
@@ -118,7 +113,7 @@ vector<int> kthSmallLarge(vector<int> &arr, int n, int k)
 // Partially accepted
 // ******************************************************************
 //  Sort 012
-/*
+
 void sort012(int *arr, int n)
 {
     //   Write your code here
@@ -143,7 +138,7 @@ void sort012(int *arr, int n)
         }
     }
     printArray(arr, n);
-} */
+}
 // completed
 
 // ********************************************************
@@ -171,34 +166,6 @@ int sumOfMaxMin(vector<int> &arr, int n)
     }
 
     return max + min;
-}
-
-// **************************************************************
-// Move negetive
-vector<int> separateNegativeAndPositive(vector<int> &nums)
-{
-    // Write your code here.
-
-    int low = 0;
-    int high = nums.size() - 1;
-
-    while (low < high)
-    {
-        if (nums[low] < 0)
-        {
-            low++;
-        }
-        else if (nums[high] > 0)
-        {
-            high--;
-        }
-        else if (nums[low] > 0 && nums[high] < 0)
-        {
-            swap(nums[low], nums[high]);
-            low++;
-            high--;
-        }
-    }
 }
 
 // *******************************************************************
@@ -239,35 +206,66 @@ long long maxSubarraySum(int arr[], int n)
 }
 // ********************************************************************
 // Move all the negetive number to one side of the array
-/*
+
 vector<int> separateNegativeAndPositive(vector<int> &nums)
 {
     // Write your code here.
-    int pivot = 0;
     int low = 0;
     int high = nums.size() - 1;
     while (low < high)
     {
-        if (nums[low] > pivot && nums[high] < pivot)
+        if (nums[low] >= 0 && nums[high] < 0)
         {
             swap(nums[low], nums[high]);
-            high--;
             low++;
+            high--;
         }
         else
         {
-            if (nums[low] < pivot)
+            if (nums[low] < 0)
             {
                 low++;
             }
-            if (nums[high] > pivot)
+            if (nums[high] >= 0)
             {
                 high--;
             }
         }
     }
     return nums;
-}*/
+}
+// *************************************************************
+// Find union and intersection of tow arraysq
+void findSimilarity(vector<int> arr1, vector<int> arr2, int n, int m)
+{
+    // Write Your Code here.
+    sort(arr1.begin(), arr1.end());
+    sort(arr2.begin(), arr2.end());
+    int start = 0;
+    int end = 0;
+    int currentElement;
+    int commonCount = 0;
+    vector<int> result;
+    while (start < n && end < m)
+    {
+        if (arr1[start] < arr2[end])
+            start++;
+        else if (arr1[start] > arr2[end])
+            end++;
+        else
+        {
+            commonCount++;
+            currentElement = arr1[start];
+            start++;
+            end++;
+        }
+    }
+    for (int i = 0; i < result.size(); i++)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+}
 // *************************************************************
 // Check subset problem.
 bool checkSubset(vector<int> &arr1, vector<int> &arr2, int n, int m)
@@ -318,63 +316,49 @@ int pairSum(int arr[], int n, int target)
         return -1;
 }
 // ******************************************************************
-// vector<int> findCommonElements(vector<int> &a, vector<int> &b, vector<int> &c)
-// {
-//     // Write your code here
-//     vector<int> commonElement;
-//     vector<int> result;
-//     int a_start = 0;
-//     int b_start = 0;
-//     int prev_element = NULL;
+vector<int> commonInArray(vector<int> &arr1, vector<int> &arr2)
+{
+    int start = 0;
+    int end = 0;
+    int currentElement = arr1[start];
+    int commonCount = 0;
+    vector<int> result;
+    while (start < arr1.size() && end < arr2.size())
+    {
+        if (arr1[start] < arr2[end])
+            start++;
+        else if (arr1[start] > arr2[end])
+            end++;
+        else
+        {
+            if (currentElement != arr1[start])
+            {
+                result.push_back(arr1[start]);
+                currentElement = arr1[start];
+            }
+            start++;
+            end++;
+        }
+    }
+    return result;
+}
+vector<int> findCommonElements(vector<int> &a, vector<int> &b, vector<int> &c)
+{
+    vector<int> res = commonInArray(a, b);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << ' ';
+    }
+    cout << endl;
+    vector<int> res2 = commonInArray(res, c);
+    for (int i = 0; i < res2.size(); i++)
+    {
+        cout << res2[i] << " ";
+    }
+    cout << endl;
+    return res2;
+}
 
-//     while (a_start < a.size() && b_start < b.size())
-//     {
-//         if (a[a_start] < b[b_start])
-//         {
-//             a_start++;
-//         }
-//         else if (a[a_start] > b[b_start])
-//         {
-//             b_start++;
-//         }
-//         else
-//         {
-//             if (a[a_start] != prev_element)
-//             {
-//                 commonElement.push_back(a[a_start]);
-//                 prev_element = a[a_start];
-//             }
-//             a_start++;
-//             b_start++;
-//         }
-//     }
-//     a_start = 0;
-//     b_start = 0;
-//     prev_element = NULL;
-//     while (a_start < commonElement.size() && b_start < c.size())
-//     {
-//         if (commonElement[a_start] < c[b_start])
-//         {
-//             a_start++;
-//         }
-//         else if (commonElement[a_start] > c[b_start])
-//         {
-//             b_start++;
-//         }
-//         else
-//         {
-//             if (commonElement[a_start] != prev_element)
-//             {
-//                 result.push_back(commonElement[a_start]);
-//                 prev_element = commonElement[a_start];
-//             }
-//             a_start++;
-//             b_start++;
-//         }
-//     }
-//     return result;
-// }
-// incomplete
 // **********************************************************************
 // Subset sum equal to K
 // Approach : Since subset generation take exponential time so in order to reduce the complexity
@@ -655,6 +639,8 @@ int minimumJumps(vector<int> &arr, int n)
 
 int main()
 {
-    vector<int> vect = {1};
-    cout << minimumJumps(vect, 1) << endl;
+    vector<int> vect = {1, 2, 2, 3};
+    vector<int> vect2 = {2, 2, 3, 3};
+    vector<int> vect3 = {2, 2, 3};
+    vector<int> res = findCommonElements(vect, vect2, vect3);
 }
