@@ -104,10 +104,50 @@ long long maxSubarraySum(int arr[], int n)
     }
     return globalSum;
 }
-// **********************************************************
+// *******************************************************
+// Traping rain water problem
+long getTrappedWater(long *arr, int n)
+{
+    // Write your code here.
+    long waterTrapped = 0;
+    long localMax = 0;
+    int maxHeightIndex = 0;
+    int index = 1;
+    long buidingArea = 0;
+    while (index < n)
+    {
+        if (arr[index] < arr[maxHeightIndex])
+        {
+            if (arr[index] == 0)
+            {
+                index++;
+            }
+            else
+            {
+                long area = (min(arr[index], arr[maxHeightIndex]) * (index - maxHeightIndex - 1)) - buidingArea;
+                localMax = max(localMax, area);
+                buidingArea += arr[index];
+                index++;
+            }
+        }
+        else
+        {
+            long area = (min(arr[index], arr[maxHeightIndex]) * (index - maxHeightIndex - 1)) - buidingArea;
+            localMax = max(localMax, area);
+            waterTrapped += localMax;
+            maxHeightIndex = index;
+            buidingArea = 0;
+            localMax = 0;
+            index++;
+        }
+    }
+    waterTrapped = waterTrapped + localMax;
+    return waterTrapped;
+}
+// *******************************************************
 int main()
 {
-    int arr[] = {10, 20, -30, 40, -50, 60};
+    long arr[] = {4, 2, 0, 3, 2, 5};
     int n = 6;
-    cout << maxSubarraySum(arr, n) << endl;
+    cout << getTrappedWater(arr, n) << endl;
 }

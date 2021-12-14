@@ -192,18 +192,19 @@ void roatate(int *arr, int n, int steps)
 long long maxSubarraySum(int arr[], int n)
 {
     int localMax = INT32_MIN;
-    long long globalMax = LLONG_MIN;
+    long long globalMax = 0;
     int i = 0;
     while (i < n)
     {
         localMax = max(localMax, arr[i] + localMax);
-        if (localMax < globalMax)
+        if (localMax > globalMax)
         {
             globalMax = localMax;
         }
     }
     return globalMax;
 }
+
 // ********************************************************************
 // Move all the negetive number to one side of the array
 
@@ -519,6 +520,39 @@ int findMinDiff(int n, int m, vector<int> chocolates)
 }
 
 // *******************************************************************
+// Merge two Sorted arrays/list
+vector<int> mergeSortedList(vector<int> &list_1, vector<int> &list_2)
+{
+    int index_1 = 0;
+    int index_2 = 0;
+    int size_1 = list_1.size();
+    int size_2 = list_2.size();
+    vector<int> result;
+    while (index_1 < size_1 && index_2 < size_2)
+    {
+        if (list_1[index_1] <= list_2[index_2])
+        {
+            result.push_back(list_1[index_1]);
+            index_1++;
+        }
+        else
+        {
+            result.push_back(list_2[index_2]);
+            index_2++;
+        }
+    }
+    while (index_1 < size_1)
+    {
+        result.push_back(list_1[index_1]);
+    }
+    while (index_2 < size_2)
+    {
+        result.push_back(list_2[index_2]);
+    }
+    return result;
+}
+
+// *******************************************************************
 // Merge Interval
 vector<vector<int>> mergeIntervals(vector<vector<int>> &intervals)
 {
@@ -641,6 +675,10 @@ int main()
 {
     vector<int> vect = {1, 2, 2, 3};
     vector<int> vect2 = {2, 2, 3, 3};
-    vector<int> vect3 = {2, 2, 3};
-    vector<int> res = findCommonElements(vect, vect2, vect3);
+    vector<int> res = mergeSortedList(vect, vect2);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << " ";
+    }
+    cout << endl;
 }
