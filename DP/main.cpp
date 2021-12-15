@@ -137,9 +137,47 @@ bool canPartition(vector<int> &nums)
 // DP Approach
 
 // *************************************
+// Coin Change 2
+int change(int amount, vector<int> &coins)
+{
+    int size = coins.size();
+    int *dp[size + 1];
+    for (int i = 0; i < size + 1; i++)
+    {
+        dp[i] = new int[amount + 1];
+        for (int j = 0; j < amount + 1; j++)
+        {
+            if (j == 0)
+            {
+                dp[i][j] = 1;
+            }
+            else
+            {
+                dp[i][j] = 0;
+            }
+        }
+    }
+    // printDPTable(dp, size + 1, amount + 1);
+    for (int i = 1; i < size + 1; i++)
+    {
+        for (int j = 1; j < amount + 1; j++)
+        {
+            if (j < coins[i - 1])
+            {
+                dp[i][j] = dp[i - 1][j];
+            }
+            else
+            {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
+            }
+        }
+    }
+    return dp[size][amount];
+}
+// *************************************
 
 int main()
 {
-    vector<int> vect = {1, 2, 3, 5};
-    cout << canPartition(vect) << endl;
+    vector<int> vect = {1, 2, 5};
+    cout << change(5, vect) << endl;
 }
